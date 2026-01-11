@@ -20,14 +20,14 @@ ThemeData get _themeData => ThemeData(
   colorScheme: ColorScheme.fromSeed(seedColor: PoColor.get.softCoral.value),
   scaffoldBackgroundColor: PoColor.get.scaffold.value,
   appBarTheme: AppBarTheme(
-    titleTextStyle: GoogleFonts.montserrat(),
+    titleTextStyle: GoogleFonts.lato(),
     iconTheme: IconThemeData(color: PoColor.get.text.value),
   ),
   tabBarTheme: TabBarThemeData(
-    labelStyle: GoogleFonts.montserrat(),
-    unselectedLabelStyle: GoogleFonts.montserrat(),
+    labelStyle: GoogleFonts.lato(),
+    unselectedLabelStyle: GoogleFonts.lato(),
   ),
-  textTheme: GoogleFonts.montserratTextTheme(),
+  textTheme: GoogleFonts.latoTextTheme(),
   inputDecorationTheme: InputDecorationTheme(
     contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
     hintStyle: TextStyle(
@@ -61,5 +61,5 @@ ThemeData get _themeData => ThemeData(
 );
 
 ThemeData get poThemeData => _themeData.copyWith(
-  textTheme: GoogleFonts.montserratTextTheme(_themeData.textTheme),
+  textTheme: GoogleFonts.latoTextTheme(_themeData.textTheme),
 );
