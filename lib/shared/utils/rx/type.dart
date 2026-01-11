@@ -17,6 +17,15 @@ class RxDouble extends Rx<double> {
   RxDouble(super.value);
 }
 
+class RxList<T> extends Rx<List<T>> {
+  RxList(super.value);
+
+  void clear() {
+    value.clear();
+    notifyListeners();
+  }
+}
+
 /// Rx nullable
 class Rxn<T> extends ValueNotifier<T?> {
   Rxn(super.value);
