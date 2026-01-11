@@ -22,13 +22,13 @@ abstract mixin class PoColor {
   PoColorBase get transparent => Colors.transparent.base;
 
   static PoColor get get => _AppColor();
-}
 
-class _AppColor extends PoColor {
-  PoColorBase forIndex(int i) => switch ((i ~/ 3) % 3) {
-    0 => mintTeal,
-    1 => softCoral,
-    2 => goldenYellow,
-    _ => grey,
+  static PoColorBase forIndex(int i) => switch ((i ~/ 3) % 3) {
+    0 => PoColor.get.mintTeal,
+    1 => PoColor.get.softCoral,
+    2 => PoColor.get.goldenYellow,
+    _ => PoColor.get.grey,
   };
 }
+
+class _AppColor extends PoColor {}
