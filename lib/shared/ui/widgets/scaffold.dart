@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart'
     show
+        ColoredBox,
         FloatingActionButtonLocation,
         PreferredSizeWidget,
         Scaffold,
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart'
         StackFit,
         StatelessWidget,
         Widget;
+import 'package:pokedex/shared/styles/colors/color.dart' show PoColor;
 
 class PoUIScaffold extends StatelessWidget {
   const PoUIScaffold({
@@ -39,19 +41,23 @@ class PoUIScaffold extends StatelessWidget {
   final bool extendBody;
 
   @override
-  Widget build(_) => Stack(
-    fit: StackFit.expand,
-    children: <Widget>[
-      if (background != null) background!,
-      Scaffold(
-        appBar: appBar,
-        body: body,
-        bottomNavigationBar: bottomNavigationBar,
-        floatingActionButton: floatingActionButton,
-        floatingActionButtonLocation: floatingActionButtonLocation,
-        extendBodyBehindAppBar: extendBodyBehindAppBar,
-        extendBody: extendBody,
-      ),
-    ],
+  Widget build(_) => ColoredBox(
+    color: PoColor.get.scaffold.value,
+    child: Stack(
+      fit: StackFit.expand,
+      children: <Widget>[
+        if (background != null) background!,
+        Scaffold(
+          appBar: appBar,
+          body: body,
+          backgroundColor: PoColor.get.transparent.value,
+          bottomNavigationBar: bottomNavigationBar,
+          floatingActionButton: floatingActionButton,
+          floatingActionButtonLocation: floatingActionButtonLocation,
+          extendBodyBehindAppBar: extendBodyBehindAppBar,
+          extendBody: extendBody,
+        ),
+      ],
+    ),
   );
 }
