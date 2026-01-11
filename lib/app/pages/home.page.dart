@@ -6,6 +6,7 @@ import 'package:flutter/material.dart'
         CrossAxisAlignment,
         EdgeInsets,
         EdgeInsetsGeometry,
+        Expanded,
         FloatingActionButton,
         FontWeight,
         GestureDetector,
@@ -17,18 +18,33 @@ import 'package:flutter/material.dart'
         Row,
         SafeArea,
         SizedBox,
+        SliverAppBar,
         State,
         StatefulWidget,
         Widget,
         WidgetsBinding,
         kToolbarHeight;
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocListener;
 import 'package:pokedex/app/bloc/pokemon.bloc.dart'
-    show PokemonBloc, PokemonListEvent;
+    show
+        PokemonBloc,
+        PokemonListEvent,
+        PokemonListFailureState,
+        PokemonListLoadingState,
+        PokemonListSuccessState,
+        PokemonState;
 import 'package:pokedex/app/models/pokemon.model.dart' show Pokemon;
 import 'package:pokedex/shared/styles/colors/color.dart'
     show PoColor, PowColorToolBase;
 import 'package:pokedex/shared/ui/widgets.dart'
-    show PoRefreshController, PoUIScaffold, PoUISvg, PoUIText;
+    show
+        PoRefreshController,
+        PoRefreshControllerExtension,
+        PoUIInfiniteListView,
+        PoUIInfiniteListViewRefresh,
+        PoUIScaffold,
+        PoUISvg,
+        PoUIText;
 import 'package:pokedex/shared/utils/rx.dart' show RxBool, RxList;
 
 class HomePage extends StatefulWidget {
@@ -43,7 +59,7 @@ class _HomePageState extends State<HomePage> {
 
   final PoRefreshController _refreshController = PoRefreshController();
   final RxList<Pokemon> _data = RxList<Pokemon>(<Pokemon>[]);
-  final RxBool _showLoading = RxBool(false);
+  final RxBool _loading = RxBool(false);
 
   @override
   void initState() {
@@ -62,7 +78,7 @@ class _HomePageState extends State<HomePage> {
 
   void _refresh() {
     _data.clear();
-    _showLoading.value = true;
+    _loading.value = true;
     _bloc.add(const PokemonListEvent());
   }
 
@@ -90,12 +106,21 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _appbar(),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: PoUIText(
-              'Pokedex',
-              fontWeight: FontWeight.w600,
-              fontSize: 24,
+          Expanded(
+            child: BlocListener<PokemonBloc, PokemonState>(
+              bloc: _bloc,
+              listener: (_, PokemonState s) {
+                if (s is PokemonListLoadingState) {
+                  _loading.value = s.loading;
+                } else if (s is PokemonListSuccessState) {
+                  _data.addAll(s.data);
+                  _refreshController.completeAll();
+                } else if (s is PokemonListFailureState) {
+                  // TODO: show toast
+                  _refreshController.completeAll();
+                }
+              },
+              child: _mainView(),
             ),
           ),
         ],
@@ -120,5 +145,27 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     ),
+  );
+
+  Widget _mainView() => PoUIInfiniteListView(
+    refresher: PoUIInfiniteListViewRefresh(
+      controller: _refreshController,
+      enablePullDown: !_loading.value,
+      enablePullUp: !_loading.value,
+      onRefresh: _refresh,
+      onLoading: () => _bloc.add(PokemonListEvent(offset: _data.length)),
+    ),
+    headers: const <Widget>[
+      SliverAppBar(
+        backgroundColor: Colors.transparent,
+        floating: true,
+        pinned: true,
+        title: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: PoUIText('Pokedex', fontWeight: FontWeight.w600, fontSize: 24),
+        ),
+      ),
+    ],
+    children: <Widget>[],
   );
 }

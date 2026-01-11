@@ -24,6 +24,13 @@ class RxList<T> extends Rx<List<T>> {
     value.clear();
     notifyListeners();
   }
+
+  int get length => value.length;
+
+  void addAll(Iterable<T> iterable) {
+    value.addAll(iterable);
+    notifyListeners();
+  }
 }
 
 /// Rx nullable
