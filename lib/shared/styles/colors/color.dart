@@ -17,6 +17,8 @@ abstract mixin class PoColor {
 
   PoColorBase get textInvert => const Color(0xFFF4F4F4).base;
 
+  PoColorBase get grey => const Color(0xFFABADB3).base;
+
   static PoColor get get => _AppColor();
 }
 
