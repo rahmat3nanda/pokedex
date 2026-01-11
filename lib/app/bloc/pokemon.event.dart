@@ -8,7 +8,7 @@ abstract class PokemonEvent extends Equatable {
 }
 
 class PokemonListEvent extends PokemonEvent {
-  const PokemonListEvent({this.offset = 0, this.limit = 10});
+  const PokemonListEvent({this.offset = 0, this.limit = 15});
 
   final int offset;
   final int limit;
