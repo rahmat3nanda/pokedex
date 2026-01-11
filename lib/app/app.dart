@@ -8,6 +8,7 @@ import 'package:flutter/material.dart'
         Widget;
 import 'package:flutter/services.dart' show SystemUiOverlayStyle;
 import 'package:pokedex/app/pages/home.page.dart' show HomePage;
+import 'package:pokedex/cores/core/context.manager.dart' show ContextManager;
 import 'package:pokedex/shared/styles/theme_data.dart' show poThemeData;
 
 class App extends StatelessWidget {
@@ -24,6 +25,7 @@ class App extends StatelessWidget {
       systemNavigationBarIconBrightness: Brightness.dark,
     ),
     child: MaterialApp(
+      navigatorKey: ContextManager.i.appKey,
       debugShowCheckedModeBanner: false,
       title: 'Pokedex',
       theme: poThemeData,
