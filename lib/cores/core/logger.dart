@@ -1,8 +1,6 @@
 import 'package:logger/logger.dart'
     show AnsiColor, Level, Logger, PrettyPrinter;
-import 'package:meta/meta.dart' show protected;
 
-@protected
 class PoLogger {
   factory PoLogger() => _instance;
 

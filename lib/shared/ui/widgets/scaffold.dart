@@ -2,6 +2,7 @@ import 'package:flutter/material.dart'
     show
         ColoredBox,
         FloatingActionButtonLocation,
+        Material,
         PreferredSizeWidget,
         Scaffold,
         Stack,
@@ -41,23 +42,26 @@ class PoUIScaffold extends StatelessWidget {
   final bool extendBody;
 
   @override
-  Widget build(_) => ColoredBox(
-    color: PoColor.get.scaffold.value,
-    child: Stack(
-      fit: StackFit.expand,
-      children: <Widget>[
-        if (background != null) background!,
-        Scaffold(
-          appBar: appBar,
-          body: body,
-          backgroundColor: PoColor.get.transparent.value,
-          bottomNavigationBar: bottomNavigationBar,
-          floatingActionButton: floatingActionButton,
-          floatingActionButtonLocation: floatingActionButtonLocation,
-          extendBodyBehindAppBar: extendBodyBehindAppBar,
-          extendBody: extendBody,
-        ),
-      ],
+  Widget build(_) => Material(
+    color: PoColor.get.transparent.value,
+    child: ColoredBox(
+      color: PoColor.get.scaffold.value,
+      child: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          if (background != null) background!,
+          Scaffold(
+            appBar: appBar,
+            body: body,
+            backgroundColor: PoColor.get.transparent.value,
+            bottomNavigationBar: bottomNavigationBar,
+            floatingActionButton: floatingActionButton,
+            floatingActionButtonLocation: floatingActionButtonLocation,
+            extendBodyBehindAppBar: extendBodyBehindAppBar,
+            extendBody: extendBody,
+          ),
+        ],
+      ),
     ),
   );
 }
