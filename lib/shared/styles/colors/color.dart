@@ -24,4 +24,11 @@ abstract mixin class PoColor {
   static PoColor get get => _AppColor();
 }
 
-class _AppColor extends PoColor {}
+class _AppColor extends PoColor {
+  PoColorBase forIndex(int i) => switch ((i ~/ 3) % 3) {
+    0 => mintTeal,
+    1 => softCoral,
+    2 => goldenYellow,
+    _ => grey,
+  };
+}
