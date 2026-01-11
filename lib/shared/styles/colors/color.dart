@@ -13,7 +13,7 @@ abstract mixin class PoColor {
 
   PoColorBase get scaffold => const Color(0xFFF4F4F4).base;
 
-  PoColorBase get text => const Color(0xFF313842).base;
+  PoColorBase get text => const Color(0xFF000000).base;
 
   PoColorBase get textInvert => const Color(0xFFF4F4F4).base;
 
