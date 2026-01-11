@@ -1,6 +1,6 @@
 import 'dart:ui' show Color;
 
-import 'package:flutter/material.dart' show Alignment, LinearGradient;
+import 'package:flutter/material.dart' show Alignment, Colors, LinearGradient;
 
 part 'color_base.dart';
 
@@ -18,6 +18,8 @@ abstract mixin class PoColor {
   PoColorBase get textInvert => const Color(0xFFF4F4F4).base;
 
   PoColorBase get grey => const Color(0xFFABADB3).base;
+
+  PoColorBase get transparent => Colors.transparent.base;
 
   static PoColor get get => _AppColor();
 }
