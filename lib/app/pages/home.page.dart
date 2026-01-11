@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart'
     show
+        Align,
+        Alignment,
+        BorderRadius,
+        BoxDecoration,
         CircleBorder,
         Colors,
         Column,
+        Container,
         CrossAxisAlignment,
         EdgeInsets,
         EdgeInsetsGeometry,
@@ -13,6 +18,7 @@ import 'package:flutter/material.dart'
         Icon,
         Icons,
         MainAxisAlignment,
+        MainAxisSize,
         Padding,
         Positioned,
         Row,
@@ -21,6 +27,7 @@ import 'package:flutter/material.dart'
         SliverAppBar,
         State,
         StatefulWidget,
+        TextAlign,
         Widget,
         WidgetsBinding,
         kToolbarHeight;
@@ -34,6 +41,8 @@ import 'package:pokedex/app/bloc/pokemon.bloc.dart'
         PokemonListSuccessState,
         PokemonState;
 import 'package:pokedex/app/models/pokemon.model.dart' show Pokemon;
+import 'package:pokedex/cores/core/context.manager.dart' show ContextManager;
+import 'package:pokedex/cores/core/env.dart' show PoEnv;
 import 'package:pokedex/shared/styles/colors/color.dart'
     show PoColor, PowColorToolBase;
 import 'package:pokedex/shared/ui/widgets.dart'
@@ -43,9 +52,12 @@ import 'package:pokedex/shared/ui/widgets.dart'
         PoUIInfiniteListView,
         PoUIInfiniteListViewRefresh,
         PoUIScaffold,
+        PoUIStaggered,
         PoUISvg,
         PoUIText;
-import 'package:pokedex/shared/utils/rx.dart' show RxBool, RxList;
+import 'package:pokedex/shared/utils/extensions/string.capitalize.dart'
+    show StringCapitalize;
+import 'package:pokedex/shared/utils/rx.dart' show RxBool, RxBuilder, RxList;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -155,17 +167,65 @@ class _HomePageState extends State<HomePage> {
       onRefresh: _refresh,
       onLoading: () => _bloc.add(PokemonListEvent(offset: _data.length)),
     ),
+    padding: const EdgeInsets.all(16),
     headers: const <Widget>[
       SliverAppBar(
         backgroundColor: Colors.transparent,
         floating: true,
-        pinned: true,
+        snap: true,
         title: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: PoUIText('Pokedex', fontWeight: FontWeight.w600, fontSize: 24),
         ),
       ),
     ],
-    children: <Widget>[],
+    children: <Widget>[
+      RxBuilder<List<Pokemon>>(
+        rx: _data,
+        builder: (_, List<Pokemon> data) => PoUIStaggered.builder(
+          itemCount: data.length,
+          builder: (int i) {
+            final Pokemon item = data[i];
+            return Container(
+              width: ((ContextManager.i.size?.width ?? 512) - 40) / 2,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: PoColor.forIndex(i).value,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 2,
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: PoUIText(
+                      '#${i + 1}',
+                      color: PoColor.get.textInvert.withOpacity(.4),
+                      textAlign: TextAlign.right,
+                    ),
+                  ),
+                  PoUIText(
+                    item.name.capitalize,
+                    color: PoColor.get.textInvert,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: PoUISvg(
+                      network: '${PoEnv.i.svgUrl}${i + 1}.svg',
+                      width: 72,
+                      height: 72,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    ],
   );
 }
