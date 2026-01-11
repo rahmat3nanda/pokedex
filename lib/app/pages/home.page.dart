@@ -25,6 +25,8 @@ import 'package:flutter/material.dart'
         SafeArea,
         SizedBox,
         SliverAppBar,
+        Stack,
+        StackFit,
         State,
         StatefulWidget,
         TextAlign,
@@ -188,37 +190,39 @@ class _HomePageState extends State<HomePage> {
             final Pokemon item = data[i];
             return Container(
               width: ((ContextManager.i.size?.width ?? 512) - 40) / 2,
+              height: 156,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: PoColor.forIndex(i).value,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 2,
+              child: Stack(
+                fit: StackFit.expand,
                 children: <Widget>[
                   Align(
-                    alignment: Alignment.topRight,
-                    child: PoUIText(
-                      '#${i + 1}',
-                      color: PoColor.get.textInvert.withOpacity(.4),
-                      textAlign: TextAlign.right,
-                    ),
-                  ),
-                  PoUIText(
-                    item.name.capitalize,
-                    color: PoColor.get.textInvert,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                  ),
-                  Align(
-                    alignment: Alignment.topRight,
+                    alignment: Alignment.bottomRight,
                     child: PoUISvg(
                       network: '${PoEnv.i.svgUrl}${i + 1}.svg',
-                      width: 72,
-                      height: 72,
+                      height: 108,
                     ),
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 2,
+                    children: <Widget>[
+                      PoUIText(
+                        '#${i + 1}',
+                        color: PoColor.get.textInvert.withOpacity(.4),
+                        textAlign: TextAlign.right,
+                      ),
+                      PoUIText(
+                        item.name.capitalize,
+                        color: PoColor.get.textInvert,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    ],
                   ),
                 ],
               ),
