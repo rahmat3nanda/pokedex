@@ -7,6 +7,8 @@ import 'package:flutter/material.dart'
         StatelessWidget,
         Widget;
 import 'package:flutter/services.dart' show SystemUiOverlayStyle;
+import 'package:flutter_bloc/flutter_bloc.dart' show MultiBlocProvider;
+import 'package:pokedex/app/app.provider.dart' show AppProvider;
 import 'package:pokedex/app/pages/home.page.dart' show HomePage;
 import 'package:pokedex/cores/core/context.manager.dart' show ContextManager;
 import 'package:pokedex/shared/styles/theme_data.dart' show poThemeData;
@@ -24,12 +26,15 @@ class App extends StatelessWidget {
       systemNavigationBarDividerColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
     ),
-    child: MaterialApp(
-      navigatorKey: ContextManager.i.appKey,
-      debugShowCheckedModeBanner: false,
-      title: 'Pokedex',
-      theme: poThemeData,
-      home: const HomePage(),
+    child: MultiBlocProvider(
+      providers: AppProvider.list,
+      child: MaterialApp(
+        navigatorKey: ContextManager.i.appKey,
+        debugShowCheckedModeBanner: false,
+        title: 'Pokedex',
+        theme: poThemeData,
+        home: const HomePage(),
+      ),
     ),
   );
 }
